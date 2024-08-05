@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function Body() {
   const [arxivId, setArxivId] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch('http://127.0.0.1:5000/')
+      .then(response => response.json())
+      .then(data => console.log(data.message))
+      .catch(error => console.error('Error:', error));
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();

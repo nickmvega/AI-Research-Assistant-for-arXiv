@@ -26,7 +26,7 @@ def extract_text_and_images_from_pdf(pdf_path):
     document = fitz.open(pdf_path)
     text = ""
     image_urls = []
-    static_dir = 'static'  # Define the static directory
+    static_dir = 'static'
 
     for page_num in range(len(document)):
         page = document.load_page(page_num)

@@ -1,6 +1,7 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory, render_template
 from flask_cors import CORS
-import subprocess
+import os
+import glob
 from config import app, db
 from models import ProcessedPDF
 from fetch import fetch_pdf_url_from_arxiv, process_arxiv_pdf
@@ -13,6 +14,18 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///mydatabase.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db.init_app(app)
+
+def clean_static_folder():
+    static_folder = 'static'
+    files = glob.glob(os.path.join(static_folder, '*'))
+    for f in files:
+        os.remove(f)
+        print(f"Removed file: {f}")  # Debug print
+
+def clean_database():
+    db.session.query(ProcessedPDF).delete()
+    db.session.commit()
+    print("Database cleaned")
 
 @app.route('/process_pdf', methods=['POST'])
 def process_pdf():
@@ -38,6 +51,22 @@ def process_pdf():
     db.session.commit()
     
     return jsonify({'text': text, 'images': image_urls})
+
+@app.route('/static/<path:path>')
+def serve_static(path):
+    return send_from_directory(app.static_folder, path)
+
+@app.route('/clean_static', methods=['POST'])
+def clean_static():
+    clean_static_folder()
+    clean_database()
+    return jsonify({'message': 'Static folder and database cleaned'})
+
+@app.route('/')
+def home():
+    clean_static_folder()
+    clean_database()
+    return jsonify({'message': 'Home page loaded, static folder and database cleaned'})
 
 if __name__ == '__main__':
     from models import ProcessedPDF
