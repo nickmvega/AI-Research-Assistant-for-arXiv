@@ -5,7 +5,7 @@ import glob
 from config import app, db
 from models import ProcessedPDF
 from fetch import fetch_pdf_url_from_arxiv, process_arxiv_pdf
-import json
+import json, csv
 
 app = Flask(__name__, static_url_path='/static', static_folder='static')
 CORS(app)
@@ -67,6 +67,28 @@ def home():
     clean_static_folder()
     clean_database()
     return jsonify({'message': 'Home page loaded, static folder and database cleaned'})
+
+@app.route('/update_csv', methods=['POST'])
+def update_csv():
+    data = request.get_json()
+    arxiv_id = data.get('arxiv_id')
+    prompt = data.get('prompt')
+
+    if not arxiv_id or not prompt:
+        return jsonify({'error': 'Invalid input data'}), 400
+
+    # Define the CSV file path
+    csv_file_path = 'prompts.csv'
+
+    # Append the new prompt to the CSV file
+    with open(csv_file_path, 'a', newline='') as csvfile:
+        csv_writer = csv.writer(csvfile)
+        csv_writer.writerow([arxiv_id, prompt])
+
+    # Placeholder: Return a dummy model response
+    model_response = "This is where the model's response would appear."
+
+    return jsonify({'modelResponse': model_response})
 
 if __name__ == '__main__':
     from models import ProcessedPDF
