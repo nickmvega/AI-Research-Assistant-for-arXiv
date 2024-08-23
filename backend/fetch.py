@@ -48,13 +48,13 @@ def process_arxiv_pdf(arxiv_id):
     pdf_url = fetch_pdf_url_from_arxiv(arxiv_id)
     if not pdf_url:
         print("Failed to fetch PDF URL from arXiv")
-        return None, None
+        return None, None, None
 
-    pdf_path = f"{arxiv_id}.pdf"
+    pdf_path = f"static/{arxiv_id}.pdf"
     download_pdf(pdf_url, pdf_path)
     text, image_urls = extract_text_and_images_from_pdf(pdf_path)
-    os.remove(pdf_path)
-    return text, image_urls
+
+    return text, image_urls, pdf_path  # Return the PDF path
 
 if __name__ == "__main__":
     arxiv_id = sys.argv[1]

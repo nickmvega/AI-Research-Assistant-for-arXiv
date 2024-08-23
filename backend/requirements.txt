@@ -1,3 +1,4 @@
-Flask
-requests
-PyMuPDF
+Flask==3.0.3
+Flask-CORS==3.0.10
+requests==2.31.0
+PyMuPDF==1.21.1

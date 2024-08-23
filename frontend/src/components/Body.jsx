@@ -20,15 +20,15 @@ function Body() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-full text-center space-y-6">
-      <div className="text-base text-gray-400">Powered by Llama 3.1</div>
-      <div className="text-5xl font-bold text-white">Your Research Assistant</div>
+    <div className="flex flex-col items-center justify-center h-full text-center transform scale-150">
+      <div className="text-lg text-gray-400 mb-2">Powered by Llama 3.1 and Together AI</div>
+      <div className="text-7xl font-bold text-white mb-2">Your Research Assistant</div>
       
-      <form className="input-group relative w-full max-w-lg mt-10 flex items-center" onSubmit={handleSubmit}>
+      <form className="input-group relative w-full max-w-2xl mt-10 flex items-center" onSubmit={handleSubmit}>
         <input 
           type="text" 
           name="text" 
-          className="input border border-solid border-gray-400 rounded-l-lg bg-transparent py-6 px-8 text-xl text-white focus:outline-none focus:border-white flex-grow" 
+          className="input border border-solid border-gray-400 rounded-l-lg bg-transparent py-6 px-8 text-2xl text-white focus:outline-none focus:border-white flex-grow" 
           placeholder="Enter arXiv ID here"
           value={arxivId}
           onChange={(e) => setArxivId(e.target.value)}
